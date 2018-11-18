@@ -15,7 +15,6 @@
 
 vendor/
 *.db
+sekisan.db*
 
 .idea/
-
-sekisan.db*
