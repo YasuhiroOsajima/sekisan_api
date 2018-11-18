@@ -15,6 +15,6 @@
 
 vendor/
 *.db
-sekisan.db*
+sekisan.sqlite3*
 
 .idea/

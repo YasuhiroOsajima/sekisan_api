@@ -6,12 +6,13 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"log"
-	"myvm/config"
-	"myvm/controller"
 	"net/http"
 	"os"
 	"strings"
 	"time"
+
+	"sekisan_api/config"
+	"sekisan_api/controller"
 )
 
 const (
