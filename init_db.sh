@@ -47,7 +47,9 @@ echo "Create 'sekisan' table."
 ${SQLITE_COM} "CREATE TABLE IF NOT EXISTS sekisan (\
   id            INTEGER PRIMARY KEY  AUTOINCREMENT,\
   employee_num  INT,\
-  sekisan       INT\
+  sekisan       INT,\
+  FOREIGN KEY (employee_num)\
+  REFERENCES member(employee_num)\
   );"
 
 
@@ -61,13 +63,18 @@ echo "Create 'transactions' table."
 
 ${SQLITE_COM} "CREATE TABLE IF NOT EXISTS transactions (\
   id            INTEGER PRIMARY KEY  AUTOINCREMENT,\
+  sekisan_id    INT,\
   update_date   TEXT,\
   employee_num  INT,\
   before        INT,\
   added         INT,\
   subtracted    INT,\
   after         INT,\
-  reason        TEXT\
+  reason        TEXT,\
+  FOREIGN KEY (sekisan_id)\
+  REFERENCES sekisan(id),\
+  FOREIGN KEY (employee_num)\
+  REFERENCES member(employee_num)\
   );"
 
 
