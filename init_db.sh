@@ -89,4 +89,5 @@ ${SQLITE_COM} "CREATE INDEX IF NOT EXISTS transaction_id_emp_idx \
 echo "Insert debug records to 'sekisan' table."
 
 ${SQLITE_COM} "INSERT INTO sekisan(employee_num, sekisan) VALUES (2001, 10);"
+	//h := controller.NewHandler(db, store)
 ${SQLITE_COM} "INSERT INTO sekisan(employee_num, sekisan) VALUES (2002, 11);"

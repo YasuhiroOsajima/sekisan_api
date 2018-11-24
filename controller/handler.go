@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
@@ -14,28 +15,29 @@ const (
 
 var BaseTime time.Time
 
-//type Handler struct {
-//	db    *sql.DB
-//	store sessions.Store
-//}
 type Handler struct {
+	db    *sql.DB
 	store sessions.Store
 }
 
-func NewHandler(store sessions.Store) *Handler {
+//type Handler struct {
+//	store sessions.Store
+//}
+
+// func NewHandler(store sessions.Store) *Handler {
+// 	BaseTime = time.Date(2018, 10, 16, 10, 0, 0, 0, time.Local)
+// 	return &Handler{
+// 		store: store,
+// 	}
+// }
+
+func NewHandler(db *sql.DB, store sessions.Store) *Handler {
 	BaseTime = time.Date(2018, 10, 16, 10, 0, 0, 0, time.Local)
 	return &Handler{
+		db:    db,
 		store: store,
 	}
 }
-
-//func NewHandler(db *sql.DB, store sessions.Store) *Handler {
-//	BaseTime = time.Date(2018, 10, 16, 10, 0, 0, 0, time.Local)
-//	return &Handler{
-//		db:    db,
-//		store: store,
-//	}
-//}
 
 //func (h *Handler) userByRequest(r *http.Request) (*model.User, error) {
 //	v := r.Context().Value("user_id")
@@ -44,6 +46,8 @@ func NewHandler(store sessions.Store) *Handler {
 //	}
 //	return nil, errors.New("Not authenticated")
 //}
+
+// SELECT * FROM sekisan WHERE `employee_num`=2001;
 
 func (h *Handler) ShowId(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)

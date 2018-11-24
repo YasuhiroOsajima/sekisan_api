@@ -13,6 +13,7 @@ import (
 
 	"sekisan_api/config"
 	"sekisan_api/controller"
+	"sekisan_api/model"
 )
 
 const (
@@ -42,22 +43,10 @@ func status(code int, allow ...string) func(w http.ResponseWriter, req *http.Req
 }
 
 func main() {
-
-	//dbusrpass := dbuser
-	//if dbpass != "" {
-	//	dbusrpass += ":" + dbpass
-	//}
-
-	//dsn := fmt.Sprintf(`%s@tcp(%s:%s)/%s?parseTime=true&loc=Local&charset=utf8mb4`, dbusrpass, dbhost, dbport, dbname)
-	//db, err := sql.Open("mysql", dsn)
-	//if err != nil {
-	//	log.Fatalf("mysql connect failed. err: %s", err)
-	//}
-
+	db := model.Db_connect()
 	store := sessions.NewCookieStore([]byte(SessionSecret))
-	//h := controller.NewHandler(db, store)
 
-	h := controller.NewHandler(store)
+	h := controller.NewHandler(db, store)
 	r := mux.NewRouter()
 	r.HandleFunc("/user/{id:[0-9]+}", h.ShowId).Methods("GET")
 	r.HandleFunc("/user/{id:[0-9]+}", status(405, "GET"))
