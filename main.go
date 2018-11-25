@@ -8,9 +8,9 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 
+	"github.com/rs/cors"
 	"sekisan_api/config"
 	"sekisan_api/controller"
 	"sekisan_api/model"
@@ -33,15 +33,6 @@ func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Not Found\n"))
 }
 
-func status(code int, allow ...string) func(w http.ResponseWriter, req *http.Request) {
-	return func(w http.ResponseWriter, req *http.Request) {
-		w.WriteHeader(code)
-		if len(allow) > 0 {
-			w.Write([]byte(`Allow: ` + strings.Join(allow, ", ") + "\n"))
-		}
-	}
-}
-
 func main() {
 	db := model.Db_connect()
 	store := sessions.NewCookieStore([]byte(SessionSecret))
@@ -51,10 +42,7 @@ func main() {
 
 	// Add handlers.
 	r.HandleFunc("/sekisan/{emp_id:[0-9]+}", h.GetSekisan).Methods("GET")
-	r.HandleFunc("/user/{id:[0-9]+}", status(405, "GET")).Methods("POST", "DELETE", "OPTIONS")
-
 	r.HandleFunc("/sekisan", h.GetAllSekisan).Methods("GET")
-	r.HandleFunc("/sekisan", status(405, "GET"))
 
 	r.NotFoundHandler = http.HandlerFunc(NotFoundHandler)
 
@@ -62,11 +50,15 @@ func main() {
 	addr := ":" + config.Port
 	log.Printf("[INFO] start server %s", addr)
 
-	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
-	originsOk := handlers.AllowedOrigins([]string{"*"})
-	methodsOk := handlers.AllowedMethods([]string{"GET", "POST", "DELETE", "OPTIONS"})
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"http://127.0.0.1:8080", "http://127.0.0.1:5000"},
+		AllowedHeaders: []string{"X-Requested-With", "Content-Type", "Authorization"},
+		AllowedMethods: []string{"GET", "POST", "DELETE", "OPTIONS"},
+		AllowCredentials: true,
+		Debug: true,
+	})
+	hdr := c.Handler(r)
 
 	log.Fatal(http.ListenAndServe(addr, context.ClearHandler(
-		handlers.LoggingHandler(os.Stderr,
-			handlers.CORS(originsOk, headersOk, methodsOk)(r)))))
+		handlers.LoggingHandler(os.Stderr, (hdr)))))
 }
