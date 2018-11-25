@@ -50,9 +50,12 @@ func main() {
 	h := controller.NewHandler(db, store)
 
 	// Add handlers.
-	r.HandleFunc("/sekisan/{id:[0-9]+}", h.GetSekisan).Methods("GET")
-	r.HandleFunc("/sekisan/{id:[0-9]+}", status(405, "GET"))
+	r.HandleFunc("/sekisan/{emp_id:[0-9]+}", h.GetSekisan).Methods("GET")
+	r.HandleFunc("/sekisan/{emp_id:[0-9]+}", status(405, "GET"))
 	//r.HandleFunc("/user/{id:[0-9]+}", status(405, "GET")).Methods("POST","PUT", "PATCH", "DELETE")
+
+	r.HandleFunc("/sekisan", h.GetAllSekisan).Methods("GET")
+	r.HandleFunc("/sekisan", status(405, "GET"))
 
 	r.NotFoundHandler = http.HandlerFunc(NotFoundHandler)
 

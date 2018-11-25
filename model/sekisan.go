@@ -2,13 +2,12 @@ package model
 
 import (
 	"database/sql"
-	"log"
 )
 
 type Sekisan struct {
-	ID           int      `json:"id"`
-	EmployeeNum  int      `json:"employee_num"`
-	Sekisan      int      `json:"sekisan"`
+	ID          int `json:"id"`
+	EmployeeNum int `json:"employee_num"`
+	Sekisan     int `json:"sekisan"`
 }
 
 func querySekisan(rows *sql.Rows, e error) (sekisan []*Sekisan, err error) {
@@ -33,7 +32,6 @@ func querySekisan(rows *sql.Rows, e error) (sekisan []*Sekisan, err error) {
 }
 
 func GetSekisanByEmployeeNum(d QueryExecutor, id string) (*Sekisan, error) {
-	log.Printf(`SELECT * FROM sekisan WHERE employee_num = ?`, id)
 	s, err := querySekisan(d.Query(`SELECT * FROM sekisan WHERE employee_num = ?`, id))
 	if err != nil {
 		return nil, err
@@ -41,6 +39,13 @@ func GetSekisanByEmployeeNum(d QueryExecutor, id string) (*Sekisan, error) {
 	return s[0], nil
 }
 
+func GetAllSekisan(d QueryExecutor) ([]*Sekisan, error) {
+	s, err := querySekisan(d.Query(`SELECT * FROM sekisan`))
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
+}
 
 func SetSekisan(d QueryExecutor, e, s int) error {
 	_, err := d.Exec(`INSERT INTO sekisan(employee_num, sekisan) VALUES (?, ?)`, e, s)
