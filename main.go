@@ -46,13 +46,17 @@ func main() {
 	db := model.Db_connect()
 	store := sessions.NewCookieStore([]byte(SessionSecret))
 
-	h := controller.NewHandler(db, store)
 	r := mux.NewRouter()
-	r.HandleFunc("/user/{id:[0-9]+}", h.ShowId).Methods("GET")
-	r.HandleFunc("/user/{id:[0-9]+}", status(405, "GET"))
+	h := controller.NewHandler(db, store)
+
+	// Add handlers.
+	r.HandleFunc("/sekisan/{id:[0-9]+}", h.GetSekisan).Methods("GET")
+	r.HandleFunc("/sekisan/{id:[0-9]+}", status(405, "GET"))
 	//r.HandleFunc("/user/{id:[0-9]+}", status(405, "GET")).Methods("POST","PUT", "PATCH", "DELETE")
+
 	r.NotFoundHandler = http.HandlerFunc(NotFoundHandler)
 
+	// Start HTTP server.
 	addr := ":" + config.Port
 	log.Printf("[INFO] start server %s", addr)
 	log.Fatal(http.ListenAndServe(addr, context.ClearHandler(handlers.LoggingHandler(os.Stderr, r))))

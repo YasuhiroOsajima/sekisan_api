@@ -2,10 +2,12 @@ package controller
 
 import (
 	"database/sql"
-	"fmt"
+	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
+	"log"
 	"net/http"
+	"sekisan_api/model"
 	"time"
 )
 
@@ -14,6 +16,7 @@ const (
 )
 
 var BaseTime time.Time
+var db *sql.DB
 
 type Handler struct {
 	db    *sql.DB
@@ -39,19 +42,33 @@ func NewHandler(db *sql.DB, store sessions.Store) *Handler {
 	}
 }
 
-//func (h *Handler) userByRequest(r *http.Request) (*model.User, error) {
-//	v := r.Context().Value("user_id")
-//	if id, ok := v.(int64); ok {
-//		return model.GetUserByID(h.db, id)
-//	}
-//	return nil, errors.New("Not authenticated")
-//}
-
-// SELECT * FROM sekisan WHERE `employee_num`=2001;
-
-func (h *Handler) ShowId(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) GetSekisan(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	w.WriteHeader(http.StatusOK)
+	sekisan_id := vars["id"]
+	if sekisan_id == "" {
+		log.Printf("[INFO] sekisan is null.")
+		log.Printf(sekisan_id)
+		badRequest(w)
+		return
+	}
 
-	fmt.Fprintf(w, "My number is : %v\n", vars["id"])
+	sek, err_r := model.GetSekisanByEmployeeNum(h.db, sekisan_id)
+	if err_r != nil {
+		log.Printf("[INFO] sql is failed.")
+		badRequest(w)
+		return
+	}
+	log.Printf("?", sek)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	sekisan := model.Sekisan{
+		ID: sek.ID,
+		EmployeeNum: sek.EmployeeNum,
+		Sekisan: sek.Sekisan,
+	}
+
+	if err := json.NewEncoder(w).Encode(sekisan); err != nil {
+		panic(err)
+	}
 }

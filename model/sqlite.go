@@ -8,9 +8,13 @@ import (
 	"os"
 )
 
+type QueryExecutor interface {
+	Exec(string, ...interface{}) (sql.Result, error)
+	Query(string, ...interface{}) (*sql.Rows, error)
+}
 
 func Db_connect() (db *sql.DB) {
-	db, err := sql.Open("sqlite3", "./test.db")
+	db, err := sql.Open("sqlite3", "./sekisan.sqlite3")
 	if err != nil {
 		log.Fatalf("DB connect failed. err: %s", err)
 		panic(err)
