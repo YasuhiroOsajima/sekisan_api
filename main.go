@@ -30,7 +30,7 @@ func init() {
 }
 
 func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Gorilla!\nNot Found\n"))
+	w.Write([]byte("Not Found\n"))
 }
 
 func status(code int, allow ...string) func(w http.ResponseWriter, req *http.Request) {
@@ -51,8 +51,7 @@ func main() {
 
 	// Add handlers.
 	r.HandleFunc("/sekisan/{emp_id:[0-9]+}", h.GetSekisan).Methods("GET")
-	r.HandleFunc("/sekisan/{emp_id:[0-9]+}", status(405, "GET"))
-	//r.HandleFunc("/user/{id:[0-9]+}", status(405, "GET")).Methods("POST","PUT", "PATCH", "DELETE")
+	r.HandleFunc("/user/{id:[0-9]+}", status(405, "GET")).Methods("POST", "DELETE", "OPTIONS")
 
 	r.HandleFunc("/sekisan", h.GetAllSekisan).Methods("GET")
 	r.HandleFunc("/sekisan", status(405, "GET"))
@@ -62,5 +61,12 @@ func main() {
 	// Start HTTP server.
 	addr := ":" + config.Port
 	log.Printf("[INFO] start server %s", addr)
-	log.Fatal(http.ListenAndServe(addr, context.ClearHandler(handlers.LoggingHandler(os.Stderr, r))))
+
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+	originsOk := handlers.AllowedOrigins([]string{"*"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "POST", "DELETE", "OPTIONS"})
+
+	log.Fatal(http.ListenAndServe(addr, context.ClearHandler(
+		handlers.LoggingHandler(os.Stderr,
+			handlers.CORS(originsOk, headersOk, methodsOk)(r)))))
 }
