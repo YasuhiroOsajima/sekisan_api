@@ -64,7 +64,7 @@ echo "Create 'transactions' table."
 ${SQLITE_COM} "CREATE TABLE IF NOT EXISTS transactions (\
   id            INTEGER PRIMARY KEY  AUTOINCREMENT,\
   sekisan_id    INT,\
-  update_date   TEXT,\
+  updated_date  TEXT,\
   employee_num  INT,\
   before        INT,\
   added         INT,\
@@ -85,9 +85,17 @@ ${SQLITE_COM} "CREATE INDEX IF NOT EXISTS transaction_id_emp_idx \
 
 
 # Insert records for debugging.
+echo "Insert debug records to 'admin' table."
+${SQLITE_COM} "INSERT INTO admin(name, password, enabled) VALUES ('tanaka', 'aaa', 1);"
+
+echo "Insert debug records to 'member' table."
+${SQLITE_COM} "INSERT INTO member(employee_num, name, enable) VALUES (2001, 'suzuki', 1);"
 
 echo "Insert debug records to 'sekisan' table."
-
 ${SQLITE_COM} "INSERT INTO sekisan(employee_num, sekisan) VALUES (2001, 10);"
-	//h := controller.NewHandler(db, store)
 ${SQLITE_COM} "INSERT INTO sekisan(employee_num, sekisan) VALUES (2002, 11);"
+
+echo "Insert debug records to 'transactions' table."
+${SQLITE_COM} "INSERT INTO \\
+  sekisan(id, sekisan_id, updated_date, before, added, subtracted, after, reason) \\
+  VALUES (1, 1, '20181202', 10, 5, 0, 15, 'Trouble shooting');"
