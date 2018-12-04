@@ -32,7 +32,9 @@ func querySekisan(rows *sql.Rows, e error) (sekisan []*Sekisan, err error) {
 }
 
 func GetSekisanByEmployeeNum(d QueryExecutor, id string) (*Sekisan, error) {
-	s, err := querySekisan(d.Query(`SELECT * FROM sekisan WHERE employee_num = ?`, id))
+	s, err := querySekisan(d.Query(`SELECT employee_num, member.name, sekisan FROM sekisan 
+                                    INNER JOIN member ON sekisan.employee_num = employee_num 
+                                    WHERE employee_num = ?`, id))
 	if err != nil {
 		return nil, err
 	}
