@@ -89,13 +89,13 @@ echo "Insert debug records to 'admin' table."
 ${SQLITE_COM} "INSERT INTO admin(name, password, enabled) VALUES ('tanaka', 'aaa', 1);"
 
 echo "Insert debug records to 'member' table."
-${SQLITE_COM} "INSERT INTO member(employee_num, name, enable) VALUES (2001, 'suzuki', 1);"
+${SQLITE_COM} "INSERT INTO member(employee_num, name, enabled) VALUES (2001, 'suzuki', 1);"
 
 echo "Insert debug records to 'sekisan' table."
 ${SQLITE_COM} "INSERT INTO sekisan(employee_num, sekisan) VALUES (2001, 10);"
 ${SQLITE_COM} "INSERT INTO sekisan(employee_num, sekisan) VALUES (2002, 11);"
 
 echo "Insert debug records to 'transactions' table."
-${SQLITE_COM} "INSERT INTO \\
-  sekisan(id, sekisan_id, updated_date, before, added, subtracted, after, reason) \\
+${SQLITE_COM} "INSERT INTO \
+  transactions(id, sekisan_id, updated_date, before, added, subtracted, after, reason) \
   VALUES (1, 1, '20181202', 10, 5, 0, 15, 'Trouble shooting');"
