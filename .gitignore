@@ -18,3 +18,6 @@ vendor/
 sekisan.sqlite3*
 
 .idea/
+
+go.sum
+modules/
