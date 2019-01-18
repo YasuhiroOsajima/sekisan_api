@@ -31,14 +31,15 @@ func querySekisan(rows *sql.Rows, e error) (sekisan []*Sekisan, err error) {
 	return
 }
 
-func GetSekisanByEmployeeNum(d QueryExecutor, id string) (*Sekisan, error) {
-	s, err := querySekisan(d.Query(`SELECT employee_num, member.name, sekisan FROM sekisan 
+func GetSekisanByEmployeeNum(id string) (s Sekisan, err error) {
+	s = Sekisan{}
+	err = db.QueryRowx(`SELECT employee_num, member.name, sekisan FROM sekisan 
                                     INNER JOIN member ON sekisan.employee_num = employee_num 
-                                    WHERE employee_num = ?`, id))
+                                    WHERE employee_num=$1`, id).StructScan(&s)
 	if err != nil {
-		return nil, err
+		return
 	}
-	return s[0], nil
+	return
 }
 
 func GetAllSekisan(d QueryExecutor) ([]*Sekisan, error) {

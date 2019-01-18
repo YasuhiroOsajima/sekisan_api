@@ -34,11 +34,11 @@ func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	db := model.Db_connect()
+	model.Db_connect()
 	store := sessions.NewCookieStore([]byte(SessionSecret))
 
 	r := mux.NewRouter()
-	h := controller.NewHandler(db, store)
+	h := controller.NewHandler(store)
 
 	// Add handlers.
 	r.HandleFunc("/sekisan/{emp_id:[0-9]+}", h.GetSekisan).Methods("GET")

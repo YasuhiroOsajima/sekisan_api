@@ -21,10 +21,9 @@ type Handler struct {
 	store sessions.Store
 }
 
-func NewHandler(db *sql.DB, store sessions.Store) *Handler {
+func NewHandler(store sessions.Store) *Handler {
 	//BaseTime = time.Date(2018, 10, 16, 10, 0, 0, 0, time.Local)
 	return &Handler{
-		db:    db,
 		store: store,
 	}
 }
