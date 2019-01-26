@@ -27,7 +27,8 @@ SQLITE_COM="sqlite3 ${DB_FILE} "
 echo "Create 'admin' table."
 
 ${SQLITE_COM} "CREATE TABLE IF NOT EXISTS admin (\
-  name        TEXT  PRIMARY KEY,\
+  id          INTEGER PRIMARY KEY  AUTOINCREMENT,\
+  name        TEXT,\
   password    TEXT,\
   enabled     INT\
   );"
@@ -97,5 +98,5 @@ ${SQLITE_COM} "INSERT INTO sekisan(employee_num, sekisan) VALUES (2002, 11);"
 
 echo "Insert debug records to 'transactions' table."
 ${SQLITE_COM} "INSERT INTO \
-  transactions(id, sekisan_id, updated_date, before, added, subtracted, after, reason) \
-  VALUES (1, 1, '20181202', 10, 5, 0, 15, 'Trouble shooting');"
+  transactions(sekisan_id, updated_date, before, added, subtracted, after, reason) \
+  VALUES (1, '20181202', 10, 5, 0, 15, 'Trouble shooting');"

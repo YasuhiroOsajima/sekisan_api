@@ -1,0 +1,439 @@
+swagger: "2.0"
+info:
+  description: |
+    REST API information for `Sekisan` app.
+  version: "0.0.1"
+  title: Sekisan App
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths
+basePath: /sekisan_app/
+#
+schemes:
+  # tip: remove http to make production-grade
+  - http
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+
+paths:
+  /admin:
+    get:
+      tags:
+        - AdminAPI
+      summary: List Admin users.
+      description: Returns a list of Admin user information.
+      # used as the method name of the controller
+      operationId: get_admin_list
+      responses:
+        200:
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/AdminUserListResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      tags:
+        - AdminAPI
+      summary: Create Admin user.
+      description: Create new Admin user.
+      # used as the method name of the controller
+      operationId: create_admin_user
+      produces:
+        - application/json
+      parameters:
+        - name: user_name
+          in: formData
+          description: Admin user name.
+          required: true
+          type: string
+        - name: password
+          in: formData
+          description: Admin user password.
+          required: true
+          type: string
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/AdminUserResponse'
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /admin/{admin_id}/name:
+    post:
+      tags:
+        - AdminAPI
+      summary: Change Admin user name.
+      description: Change Admin user name.
+      # used as the method name of the controller
+      operationId: change_admin_name
+      parameters:
+        - name: admin_id
+          in: path
+          description: Admin user id.
+          required: true
+          type: integer
+        - name: name
+          in: formData
+          description: Admin user password.
+          required: true
+          type: string
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/AdminUserResponse'
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /admin/{admin_id}/password:
+    post:
+      tags:
+        - AdminAPI
+      summary: Change Admin user password.
+      description: Change Admin user password.
+      # used as the method name of the controller
+      operationId: change_admin_password
+      parameters:
+        - name: admin_id
+          in: path
+          description: Admin user id.
+          required: true
+          type: integer
+        - name: password
+          in: formData
+          description: Admin user password.
+          required: true
+          type: string
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/AdminUserResponse'
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /admin/{admin_id}/status:
+    post:
+      tags:
+        - AdminAPI
+      summary: Change Admin user status.
+      description: Change Admin user status.
+      # used as the method name of the controller
+      operationId: change_admin_status
+      parameters:
+        - name: admin_id
+          in: path
+          description: Admin user id.
+          required: true
+          type: integer
+        - name: status
+          in: formData
+          description: Admin user status.
+          required: true
+          type: boolean
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/AdminUserResponse'
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /member:
+    get:
+      tags:
+        - AdminAPI
+      summary: List member users.
+      description: Returns a list of member user information.
+      # used as the method name of the controller
+      operationId: get_member_list
+      responses:
+        200:
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/MemberUserListResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      tags:
+        - AdminAPI
+      summary: Create member user.
+      description: Create new member user.
+      # used as the method name of the controller
+      operationId: create_member_user
+      produces:
+        - application/json
+      parameters:
+        - name: employee_num
+          in: formData
+          description: Member user employee number.
+          required: true
+          type: integer
+        - name: user_name
+          in: formData
+          description: Member user name.
+          required: true
+          type: string
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/MemberUserResponse'
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /member/{member_id}/name:
+    post:
+      tags:
+        - AdminAPI
+      summary: Change member user name.
+      description: Change member user name.
+      # used as the method name of the controller
+      operationId: change_member_name
+      parameters:
+        - name: member_id
+          in: path
+          description: Member user id.
+          required: true
+          type: integer
+        - name: name
+          in: formData
+          description: Member user password.
+          required: true
+          type: string
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/MemberUserResponse'
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /member/{member_id}/status:
+    post:
+      tags:
+        - AdminAPI
+      summary: Change member user status.
+      description: Change member user status.
+      # used as the method name of the controller
+      operationId: change_member_status
+      parameters:
+        - name: member_id
+          in: path
+          description: Member user id.
+          required: true
+          type: integer
+        - name: status
+          in: formData
+          description: Member user password.
+          required: true
+          type: boolean
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/MemberUserResponse'
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /sekisan:
+    get:
+      summary: List sekisan information.
+      description: Returns a list of sekisan information.
+      # used as the method name of the controller
+      operationId: get_sekisan_list
+      responses:
+        200:
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/SekisanListResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /sekisan/transaction:
+    get:
+      summary: List sekisan transaction information.
+      description: Returns a list of sekisan transaction information.
+      # used as the method name of the controller
+      operationId: get_transaction_list
+      responses:
+        200:
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/TransactionListResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      tags:
+        - AdminAPI
+      summary: Update sekisan information.
+      description: Update sekisan information.
+      # used as the method name of the controller
+      operationId: create_transaction
+      produces:
+        - application/json
+      parameters:
+        - name: employee_num
+          in: formData
+          description: Member user employee number.
+          required: true
+          type: integer
+        - name: hour
+          in: formData
+          description: Modify sekisan hour.
+          required: true
+          type: integer
+        - name: operation
+          in: formData
+          description: Operation type for sekisan hour.
+          required: true
+          type: string
+        - name: reason
+          in: formData
+          description: Reason of operation type for sekisan hour.
+          required: true
+          type: string
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/TransactionResponse'
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+# complex objects have schema definitions
+definitions:
+  AdminUserResponse:
+    type: object
+    required:
+      - id
+      - name
+      - status
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      status:
+        type: boolean
+  AdminUserListResponse:
+    type: array
+    items:
+      $ref: '#/definitions/AdminUserResponse'
+
+  MemberUserResponse:
+    type: object
+    required:
+      - employee_num
+      - name
+      - status
+    properties:
+      employee_num:
+        type: integer
+      name:
+        type: string
+      status:
+        type: boolean
+  MemberUserListResponse:
+    type: array
+    items:
+      $ref: '#/definitions/MemberUserResponse'
+
+  Sekisan:
+    type: object
+    required:
+      - employee_num
+      - name
+      - hours
+    properties:
+      employee_num:
+        type: integer
+      name:
+        type: string
+      hours:
+        type: integer
+  SekisanListResponse:
+    type: array
+    items:
+      $ref: '#/definitions/Sekisan'
+
+  TransactionResponse:
+    type: object
+    required:
+      - employee_num
+      - name
+      - updated_at
+      - hours
+      - operation
+      - before
+      - after
+      - reason
+    properties:
+      employee_num:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+      hours:
+        type: integer
+      operation:
+        type: string
+      before:
+        type: integer
+      after:
+        type: integer
+      reason:
+        type: string
+  TransactionListResponse:
+    type: array
+    items:
+      $ref: '#/definitions/TransactionResponse'
+
+  ErrorResponse:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        type: string

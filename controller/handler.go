@@ -11,17 +11,28 @@ import (
 )
 
 const (
-	SessionName = "test_session"
+	SessionSecret = "testtest"
+	SessionName   = "test_session"
 )
 
 //var BaseTime time.Time
+var (
+	// key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
+	store = sessions.NewCookieStore([]byte(SessionSecret))
+)
 
+// 404 handler
+func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
+	_, _ = w.Write([]byte("Not Found\n"))
+}
+
+// Correct response handlers.
 type Handler struct {
 	db    *sql.DB
 	store sessions.Store
 }
 
-func NewHandler(store sessions.Store) *Handler {
+func NewHandler() *Handler {
 	//BaseTime = time.Date(2018, 10, 16, 10, 0, 0, 0, time.Local)
 	return &Handler{
 		store: store,
