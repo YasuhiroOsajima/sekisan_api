@@ -13,7 +13,6 @@ func getMemberList() (MemberList, error) {
 	mList, err := model.GetMemberList()
 	if err != nil {
 		log.Printf("[INFO] sql is failed.")
-		badRequest(w)
 		return _, err
 	}
 
@@ -21,7 +20,7 @@ func getMemberList() (MemberList, error) {
 	return memberList, err
 }
 
-func registerMember(employeeNum int, name string) (model.Admin, error) {
+func registerMember(employeeNum int, name string) (model.Member, error) {
 	mList, err := model.GetMemberList()
 	if err != nil {
 		log.Printf("[INFO] sql is failed.")
@@ -35,16 +34,15 @@ func registerMember(employeeNum int, name string) (model.Admin, error) {
 		}
 	}
 
-	eId64, err := model.RegisterMember(employeeNum, name, 1)
+	err = model.RegisterMember(employeeNum, name, 1)
 	if err != nil {
 		log.Printf("[INFO] sql is failed.")
 		return _, err
 	}
 
-	eId := int(eId64)
-	e, err := model.GetAdmin(eId)
+	m, err := model.GetMember(employeeNum)
 
-	return e, err
+	return m, err
 }
 
 func updateMemberName(employeeNum int, name string) (model.Member, error) {

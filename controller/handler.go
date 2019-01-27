@@ -161,62 +161,133 @@ func (h *Handler) GetMemberList(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (h *Handler) RegisterMember(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	employeeNumStr := v["employee_num"]
+	name := v["name"]
+
+	employeeNum, err := strconv.Atoi(employeeNumStr)
+	if err != nil {
+		log.Printf("[INFO] Can't cast to int '" + employeeNumStr + "'.")
+		badRequest(w)
+		return
+	}
+
+	m, err := registerMember(employeeNum, name)
+	if err != nil {
+		log.Printf("[INFO] sql is failed.")
+		badRequest(w)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(m); err != nil {
+		panic(err)
+	}
+}
+
+func (h *Handler) UpdateMemberName(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	employeeNumStr := v["employee_num"]
+	name := v["name"]
+
+	employeeNum, err := strconv.Atoi(employeeNumStr)
+	if err != nil {
+		log.Printf("[INFO] Can't cast to int '" + employeeNumStr + "'.")
+		badRequest(w)
+		return
+	}
+
+	m, err := updateMemberName(employeeNum, name)
+	if err != nil {
+		log.Printf("[INFO] sql is failed.")
+		badRequest(w)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(m); err != nil {
+		panic(err)
+	}
+}
+
+func (h *Handler) UpdateMemberEnabled(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	employeeNumStr := v["employee_num"]
+	enabledStr := v["enabledStr"]
+
+	employeeNum, err := strconv.Atoi(employeeNumStr)
+	if err != nil {
+		log.Printf("[INFO] Can't cast to int '" + employeeNumStr + "'.")
+		badRequest(w)
+		return
+	}
+
+	enabled, err := strconv.Atoi(enabledStr)
+	if err != nil {
+		log.Printf("[INFO] Can't cast to int '" + enabledStr + "'.")
+		badRequest(w)
+		return
+	}
+
+	a, err := updateMemberEnabled(employeeNum, enabled)
+	if err != nil {
+		log.Printf("[INFO] sql is failed.")
+		badRequest(w)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(a); err != nil {
+		panic(err)
+	}
+}
 
 // Sekisan handler
-func (h *Handler) GetSekisan(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	sekisan_id := vars["emp_id"]
-	if sekisan_id == "" {
-		log.Printf("[INFO] sekisan is null. ?", sekisan_id)
-		badRequest(w)
-		return
-	}
-
-	sek, err_r := model.GetSekisanByEmployeeNum(h.db, sekisan_id)
-	if err_r != nil {
-		log.Printf("[INFO] sql is failed.")
-		badRequest(w)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-
-	sekisan := model.Sekisan{
-		ID:          sek.ID,
-		EmployeeNum: sek.EmployeeNum,
-		Sekisan:     sek.Sekisan,
-	}
-
-	if err := json.NewEncoder(w).Encode(sekisan); err != nil {
-		panic(err)
-	}
-}
-
 func (h *Handler) GetAllSekisan(w http.ResponseWriter, r *http.Request) {
-	sek_all, err_r := model.GetAllSekisan(h.db)
-	if err_r != nil {
+	hourList, err := model.GetAllSekisan()
+	if err != nil {
 		log.Printf("[INFO] sql is failed.")
 		badRequest(w)
 		return
 	}
 
-	var sekisan_list []model.Sekisan
-	for _, sek := range sek_all {
-		sek_i := model.Sekisan{
-			ID:          sek.ID,
-			EmployeeNum: sek.EmployeeNum,
-			Sekisan:     sek.Sekisan,
-		}
-		sekisan_list = append(sekisan_list, sek_i)
+	memberList, err := model.GetMemberList()
+	if err != nil {
+		log.Printf("[INFO] sql is failed.")
+		badRequest(w)
+		return
 	}
 
-	type AllSekisan struct {
-		Sekisan []model.Sekisan
+	type sekisan struct {
+		EmployeeNum int    `json:"employee_num"`
+		Name        string `json:"name"`
+		Hours       int    `json:"hours"`
 	}
-	all_sekisan := AllSekisan{sekisan_list}
+	type sekisanList struct {
+		Sekisan []sekisan
+	}
+
+	var sList []sekisan
+	for _, h := range hourList {
+		for _, m := range memberList {
+			if h.EmployeeNum == m.EmployeeNum {
+				sek := sekisan{
+					EmployeeNum: h.EmployeeNum,
+					Name:        m.Name,
+					Hours:       h.Hours,
+				}
+
+				sList = append(sList, sek)
+			}
+		}
+	}
+	sekisanRes := sekisanList{sList}
 
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(all_sekisan); err != nil {
+	if err := json.NewEncoder(w).Encode(sekisanRes); err != nil {
 		panic(err)
 	}
 }
+
+// Transaction handler

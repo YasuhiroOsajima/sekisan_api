@@ -23,15 +23,17 @@ func GetMemberList() ([]Member, error) {
 	return m, err
 }
 
-func RegisterMember(employeeNum int, name string, enabled int) (int64, error) {
-	res, err := db.Exec(
+func RegisterMember(employeeNum int, name string, enabled int) error {
+	tx := db.MustBegin()
+	tx.MustExec(
 		"INSERT INTO `member`(`employee_num`, `name`, `enabled`) VALUES (?, ?, ?);",
 		employeeNum, name, enabled)
+	tx.MustExec(
+		`INSERT INTO sekisan(employee_num, hours) VALUES (?, ?)`,
+		employeeNum, 0)
+	err := tx.Commit()
 
-	if err != nil {
-		return 0, err
-	}
-	return res.LastInsertId()
+	return err
 }
 
 func UpdateMemberName(employeeNum int, name string) error {

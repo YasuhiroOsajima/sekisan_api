@@ -36,9 +36,11 @@ func main() {
 
 	// Member handlers.
 	r.HandleFunc("/sekisan_app/member", h.GetMemberList).Methods("GET")
+	r.HandleFunc("/sekisan_app/member", h.RegisterMember).Methods("POST")
+	r.HandleFunc("/sekisan_app/member", h.UpdateMemberName).Methods("POST")
+	r.HandleFunc("/sekisan_app/member", h.UpdateMemberEnabled).Methods("POST")
 
 	// Sekisan handlers.
-	r.HandleFunc("/sekisan/{emp_id:[0-9]+}", h.GetSekisan).Methods("GET")
 	r.HandleFunc("/sekisan", h.GetAllSekisan).Methods("GET")
 
 	r.NotFoundHandler = http.HandlerFunc(h.NotFoundHandler)

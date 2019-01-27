@@ -46,18 +46,11 @@ ${SQLITE_COM} "CREATE TABLE IF NOT EXISTS member (\
 echo "Create 'sekisan' table."
 
 ${SQLITE_COM} "CREATE TABLE IF NOT EXISTS sekisan (\
-  id            INTEGER  PRIMARY KEY  AUTOINCREMENT,\
-  employee_num  INT,\
-  sekisan       INT,\
+  employee_num  INTEGER  PRIMARY KEY,\
+  hours         INT,\
   FOREIGN KEY (employee_num)\
   REFERENCES member(employee_num)\
   );"
-
-
-echo "Create index on 'sekisan' table."
-
-${SQLITE_COM} "CREATE INDEX IF NOT EXISTS sekisan_idx \
-  ON sekisan(employee_num);"
 
 
 echo "Create 'transactions' table."
@@ -93,8 +86,8 @@ echo "Insert debug records to 'member' table."
 ${SQLITE_COM} "INSERT INTO member(employee_num, name, enabled) VALUES (2001, 'suzuki', 1);"
 
 echo "Insert debug records to 'sekisan' table."
-${SQLITE_COM} "INSERT INTO sekisan(employee_num, sekisan) VALUES (2001, 10);"
-${SQLITE_COM} "INSERT INTO sekisan(employee_num, sekisan) VALUES (2002, 11);"
+${SQLITE_COM} "INSERT INTO sekisan(employee_num, hours) VALUES (2001, 10);"
+${SQLITE_COM} "INSERT INTO sekisan(employee_num, hours) VALUES (2002, 11);"
 
 echo "Insert debug records to 'transactions' table."
 ${SQLITE_COM} "INSERT INTO \

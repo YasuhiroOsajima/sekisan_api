@@ -13,7 +13,6 @@ func getAdminList() (AdminList, error) {
 	aList, err := model.GetAdminList()
 	if err != nil {
 		log.Printf("[INFO] sql is failed.")
-		badRequest(w)
 		return _, err
 	}
 
