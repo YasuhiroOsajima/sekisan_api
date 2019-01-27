@@ -43,6 +43,9 @@ func main() {
 	// Sekisan handlers.
 	r.HandleFunc("/sekisan", h.GetAllSekisan).Methods("GET")
 
+	// Transaction handlers.
+
+	// Now found handler.
 	r.NotFoundHandler = http.HandlerFunc(h.NotFoundHandler)
 
 	// Start HTTP server.

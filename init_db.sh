@@ -57,16 +57,13 @@ echo "Create 'transactions' table."
 
 ${SQLITE_COM} "CREATE TABLE IF NOT EXISTS transactions (\
   id            INTEGER  PRIMARY KEY  AUTOINCREMENT,\
-  sekisan_id    INT,\
-  updated_date  TEXT,\
   employee_num  INT,\
+  updated_date  TEXT,\
   before        INT,\
   added         INT,\
   subtracted    INT,\
   after         INT,\
   reason        TEXT,\
-  FOREIGN KEY (sekisan_id)\
-  REFERENCES sekisan(id),\
   FOREIGN KEY (employee_num)\
   REFERENCES member(employee_num)\
   );"
@@ -91,5 +88,5 @@ ${SQLITE_COM} "INSERT INTO sekisan(employee_num, hours) VALUES (2002, 11);"
 
 echo "Insert debug records to 'transactions' table."
 ${SQLITE_COM} "INSERT INTO \
-  transactions(sekisan_id, updated_date, before, added, subtracted, after, reason) \
-  VALUES (1, '20181202', 10, 5, 0, 15, 'Trouble shooting');"
+  transactions(employee_num, updated_date, before, added, subtracted, after, reason) \
+  VALUES (2001, '20181202', 10, 5, 0, 15, 'Trouble shooting');"

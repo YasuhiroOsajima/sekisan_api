@@ -5,18 +5,18 @@ import (
 	"sekisan_api/model"
 )
 
-type MemberList struct {
+type memberList struct {
 	Member []model.Member
 }
 
-func getMemberList() (MemberList, error) {
+func getMemberList() (memberList, error) {
 	mList, err := model.GetMemberList()
 	if err != nil {
 		log.Printf("[INFO] sql is failed.")
 		return _, err
 	}
 
-	memberList := MemberList{mList}
+	memberList := memberList{mList}
 	return memberList, err
 }
 

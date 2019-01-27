@@ -5,18 +5,18 @@ import (
 	"sekisan_api/model"
 )
 
-type AdminList struct {
+type adminList struct {
 	Admin []model.Admin
 }
 
-func getAdminList() (AdminList, error) {
+func getAdminList() (adminList, error) {
 	aList, err := model.GetAdminList()
 	if err != nil {
 		log.Printf("[INFO] sql is failed.")
 		return _, err
 	}
 
-	adminList := AdminList{aList}
+	adminList := adminList{aList}
 	return adminList, err
 }
 

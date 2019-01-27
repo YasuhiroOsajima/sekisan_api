@@ -6,7 +6,6 @@ import (
 	"github.com/gorilla/sessions"
 	"log"
 	"net/http"
-	"sekisan_api/model"
 	"strconv"
 )
 
@@ -245,44 +244,12 @@ func (h *Handler) UpdateMemberEnabled(w http.ResponseWriter, r *http.Request) {
 
 // Sekisan handler
 func (h *Handler) GetAllSekisan(w http.ResponseWriter, r *http.Request) {
-	hourList, err := model.GetAllSekisan()
+	sekisanRes, err := getSekisanList()
 	if err != nil {
 		log.Printf("[INFO] sql is failed.")
 		badRequest(w)
 		return
 	}
-
-	memberList, err := model.GetMemberList()
-	if err != nil {
-		log.Printf("[INFO] sql is failed.")
-		badRequest(w)
-		return
-	}
-
-	type sekisan struct {
-		EmployeeNum int    `json:"employee_num"`
-		Name        string `json:"name"`
-		Hours       int    `json:"hours"`
-	}
-	type sekisanList struct {
-		Sekisan []sekisan
-	}
-
-	var sList []sekisan
-	for _, h := range hourList {
-		for _, m := range memberList {
-			if h.EmployeeNum == m.EmployeeNum {
-				sek := sekisan{
-					EmployeeNum: h.EmployeeNum,
-					Name:        m.Name,
-					Hours:       h.Hours,
-				}
-
-				sList = append(sList, sek)
-			}
-		}
-	}
-	sekisanRes := sekisanList{sList}
 
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(sekisanRes); err != nil {
@@ -291,3 +258,16 @@ func (h *Handler) GetAllSekisan(w http.ResponseWriter, r *http.Request) {
 }
 
 // Transaction handler
+func (h *Handler) GetTransactionList(w http.ResponseWriter, r *http.Request) {
+	transactionList, err := getTransactionList()
+	if err != nil {
+		log.Printf("[INFO] sql is failed.")
+		badRequest(w)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(transactionList); err != nil {
+		panic(err)
+	}
+}
