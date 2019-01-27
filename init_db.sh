@@ -27,8 +27,8 @@ SQLITE_COM="sqlite3 ${DB_FILE} "
 echo "Create 'admin' table."
 
 ${SQLITE_COM} "CREATE TABLE IF NOT EXISTS admin (\
-  id          INTEGER PRIMARY KEY  AUTOINCREMENT,\
-  name        TEXT,\
+  id          INTEGER  PRIMARY KEY  AUTOINCREMENT,\
+  name        TEXT  UNIQUE,\
   password    TEXT,\
   enabled     INT\
   );"
@@ -46,7 +46,7 @@ ${SQLITE_COM} "CREATE TABLE IF NOT EXISTS member (\
 echo "Create 'sekisan' table."
 
 ${SQLITE_COM} "CREATE TABLE IF NOT EXISTS sekisan (\
-  id            INTEGER PRIMARY KEY  AUTOINCREMENT,\
+  id            INTEGER  PRIMARY KEY  AUTOINCREMENT,\
   employee_num  INT,\
   sekisan       INT,\
   FOREIGN KEY (employee_num)\
@@ -63,7 +63,7 @@ ${SQLITE_COM} "CREATE INDEX IF NOT EXISTS sekisan_idx \
 echo "Create 'transactions' table."
 
 ${SQLITE_COM} "CREATE TABLE IF NOT EXISTS transactions (\
-  id            INTEGER PRIMARY KEY  AUTOINCREMENT,\
+  id            INTEGER  PRIMARY KEY  AUTOINCREMENT,\
   sekisan_id    INT,\
   updated_date  TEXT,\
   employee_num  INT,\

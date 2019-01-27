@@ -1,13 +1,13 @@
 package controller
 
 import (
-	"database/sql"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"log"
 	"net/http"
 	"sekisan_api/model"
+	"strconv"
 )
 
 const (
@@ -21,14 +21,8 @@ var (
 	store = sessions.NewCookieStore([]byte(SessionSecret))
 )
 
-// 404 handler
-func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
-	_, _ = w.Write([]byte("Not Found\n"))
-}
-
 // Correct response handlers.
 type Handler struct {
-	db    *sql.DB
 	store sessions.Store
 }
 
@@ -39,6 +33,136 @@ func NewHandler() *Handler {
 	}
 }
 
+// 404 handler
+func (h *Handler) NotFoundHandler(w http.ResponseWriter, r *http.Request) {
+	_, _ = w.Write([]byte("Not Found\n"))
+}
+
+// Admin handler
+func (h *Handler) GetAdminList(w http.ResponseWriter, r *http.Request) {
+	adminList, err := getAdminList()
+	if err != nil {
+		log.Printf("[INFO] sql is failed.")
+		badRequest(w)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(adminList); err != nil {
+		panic(err)
+	}
+}
+
+func (h *Handler) RegisterAdmin(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	name := v["name"]
+	password := v["password"]
+
+	a, err := registerAdmin(name, password)
+	if err != nil {
+		log.Printf("[INFO] sql is failed.")
+		badRequest(w)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(a); err != nil {
+		panic(err)
+	}
+}
+
+func (h *Handler) UpdateAdminName(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	idStr := v["admin_id"]
+	name := v["name"]
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		log.Printf("[INFO] Can't cast to int '" + idStr + "'.")
+		badRequest(w)
+		return
+	}
+
+	a, err := updateAdminName(id, name)
+	if err != nil {
+		log.Printf("[INFO] sql is failed.")
+		badRequest(w)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(a); err != nil {
+		panic(err)
+	}
+}
+
+func (h *Handler) UpdateAdminPassword(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	idStr := v["admin_id"]
+	password := v["password"]
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		log.Printf("[INFO] Can't cast to int '" + idStr + "'.")
+		badRequest(w)
+		return
+	}
+
+	a, err := updateAdminPassword(id, password)
+	if err != nil {
+		log.Printf("[INFO] sql is failed.")
+		badRequest(w)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(a); err != nil {
+		panic(err)
+	}
+}
+
+func (h *Handler) UpdateAdminEnabled(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	idStr := v["admin_id"]
+	enabled := v["enabled"]
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		log.Printf("[INFO] Can't cast to int '" + idStr + "'.")
+		badRequest(w)
+		return
+	}
+
+	a, err := updateAdminPassword(id, enabled)
+	if err != nil {
+		log.Printf("[INFO] sql is failed.")
+		badRequest(w)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(a); err != nil {
+		panic(err)
+	}
+}
+
+// Member handler
+func (h *Handler) GetMemberList(w http.ResponseWriter, r *http.Request) {
+	memberList, err := getMemberList()
+	if err != nil {
+		log.Printf("[INFO] sql is failed.")
+		badRequest(w)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(memberList); err != nil {
+		panic(err)
+	}
+}
+
+
+// Sekisan handler
 func (h *Handler) GetSekisan(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	sekisan_id := vars["emp_id"]

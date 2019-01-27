@@ -49,7 +49,7 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: user_name
+        - name: name
           in: formData
           description: Admin user name.
           required: true
@@ -127,25 +127,25 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /admin/{admin_id}/status:
+  /admin/{admin_id}/enabled:
     post:
       tags:
         - AdminAPI
-      summary: Change Admin user status.
-      description: Change Admin user status.
+      summary: Change Admin user enabled status.
+      description: Change Admin user enabled status.
       # used as the method name of the controller
-      operationId: change_admin_status
+      operationId: change_admin_enabled
       parameters:
         - name: admin_id
           in: path
           description: Admin user id.
           required: true
           type: integer
-        - name: status
+        - name: enabled
           in: formData
-          description: Admin user status.
+          description: Admin user enabled status.
           required: true
-          type: boolean
+          type: integer
       responses:
         "201":
           description: Success
@@ -191,7 +191,7 @@ paths:
           description: Member user employee number.
           required: true
           type: integer
-        - name: user_name
+        - name: name
           in: formData
           description: Member user name.
           required: true
@@ -235,25 +235,25 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /member/{member_id}/status:
+  /member/{member_id}/enabled:
     post:
       tags:
         - AdminAPI
-      summary: Change member user status.
-      description: Change member user status.
+      summary: Change member user enabled status.
+      description: Change member user enabled status.
       # used as the method name of the controller
-      operationId: change_member_status
+      operationId: change_member_enabled
       parameters:
         - name: member_id
           in: path
           description: Member user id.
           required: true
           type: integer
-        - name: status
+        - name: enabled
           in: formData
           description: Member user password.
           required: true
-          type: boolean
+          type: integer
       responses:
         "201":
           description: Success
@@ -348,14 +348,14 @@ definitions:
     required:
       - id
       - name
-      - status
+      - enabled
     properties:
       id:
         type: integer
       name:
         type: string
-      status:
-        type: boolean
+      enabled:
+        type: integer
   AdminUserListResponse:
     type: array
     items:
@@ -366,14 +366,14 @@ definitions:
     required:
       - employee_num
       - name
-      - status
+      - enabled
     properties:
       employee_num:
         type: integer
       name:
         type: string
-      status:
-        type: boolean
+      enabled:
+        type: integer
   MemberUserListResponse:
     type: array
     items:

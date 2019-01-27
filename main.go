@@ -27,11 +27,21 @@ func main() {
 	r := mux.NewRouter()
 	h := controller.NewHandler()
 
-	// Add handlers.
+	// Admin handlers.
+	r.HandleFunc("/sekisan_app/admin", h.GetAdminList).Methods("GET")
+	r.HandleFunc("/sekisan_app/admin", h.RegisterAdmin).Methods("POST")
+	r.HandleFunc("/sekisan_app/{admin_id[0-9]+}/name", h.UpdateAdminName).Methods("POST")
+	r.HandleFunc("/sekisan_app/{admin_id[0-9]+}/name", h.UpdateAdminPassword).Methods("POST")
+	r.HandleFunc("/sekisan_app/{admin_id[0-9]+}/name", h.UpdateAdminEnabled).Methods("POST")
+
+	// Member handlers.
+	r.HandleFunc("/sekisan_app/member", h.GetMemberList).Methods("GET")
+
+	// Sekisan handlers.
 	r.HandleFunc("/sekisan/{emp_id:[0-9]+}", h.GetSekisan).Methods("GET")
 	r.HandleFunc("/sekisan", h.GetAllSekisan).Methods("GET")
 
-	r.NotFoundHandler = http.HandlerFunc(controller.NotFoundHandler)
+	r.NotFoundHandler = http.HandlerFunc(h.NotFoundHandler)
 
 	// Start HTTP server.
 	c := cors.New(cors.Options{
