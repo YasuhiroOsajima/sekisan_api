@@ -5,10 +5,9 @@ type Sekisan struct {
 	Hours       int `json:"hours"`
 }
 
-func GetAllSekisan() ([]Sekisan, error) {
-	var s []Sekisan
-	err := db.Select(&s, "SELECT * FROM `sekisan`;")
+func GetAllSekisan() (sl []Sekisan, err error) {
+	err = db.Select(&sl, "SELECT * FROM `sekisan`;")
 
-	return s, err
+	return
 }
 

@@ -9,14 +9,23 @@ type transactionList struct {
 	Transaction []model.Transaction
 }
 
-func getTransactionList() (memberList, error) {
-	tList, err := model.GetTransaction()
+func getTransactionList() (tList transactionList, err error) {
+	tl, err := model.GetTransaction()
 	if err != nil {
 		log.Printf("[INFO] sql is failed.")
-		return _, err
+		return
 	}
 
-	memberList := transactionList{tList}
-	return memberList, err
+	tList = transactionList{tl}
+	return
 }
 
+func addTransaction(employeeNum, hour int, operation, reason string) (t model.Transaction, err error) {
+	t, err = model.AddTransaction(employeeNum, hour, operation, reason)
+	if err != nil {
+		log.Printf("[INFO] sql is failed.")
+		return
+	}
+
+	return
+}

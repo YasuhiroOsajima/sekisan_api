@@ -15,22 +15,22 @@ type sekisanList struct {
 	Sekisan []sekisan
 }
 
-func getSekisanList() (sekisanList, error) {
-	hourList, err := model.GetAllSekisan()
+func getSekisanList() (sList sekisanList, err error) {
+	hList, err := model.GetAllSekisan()
 	if err != nil {
 		log.Printf("[INFO] sql is failed.")
-		return _, err
+		return
 	}
 
-	memberList, err := model.GetMemberList()
+	mList, err := model.GetMemberList()
 	if err != nil {
 		log.Printf("[INFO] sql is failed.")
-		return _, err
+		return
 	}
 
-	var sList []sekisan
-	for _, h := range hourList {
-		for _, m := range memberList {
+	var sl []sekisan
+	for _, h := range hList {
+		for _, m := range mList {
 			if h.EmployeeNum == m.EmployeeNum {
 				sek := sekisan{
 					EmployeeNum: h.EmployeeNum,
@@ -38,10 +38,10 @@ func getSekisanList() (sekisanList, error) {
 					Hours:       h.Hours,
 				}
 
-				sList = append(sList, sek)
+				sl = append(sl, sek)
 			}
 		}
 	}
-	sekisanRes := sekisanList{sList}
-	return sekisanRes, err
+	sList = sekisanList{sl}
+	return
 }

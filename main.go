@@ -44,6 +44,8 @@ func main() {
 	r.HandleFunc("/sekisan", h.GetAllSekisan).Methods("GET")
 
 	// Transaction handlers.
+	r.HandleFunc("/sekisan", h.GetTransactionList).Methods("GET")
+	r.HandleFunc("/sekisan", h.AddTransaction).Methods("POST")
 
 	// Now found handler.
 	r.NotFoundHandler = http.HandlerFunc(h.NotFoundHandler)

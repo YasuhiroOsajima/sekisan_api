@@ -11,11 +11,23 @@ type Transaction struct {
 	Reason      string `json:"reason"`
 }
 
-func GetTransaction(employeeNum int) (Member, error) {
-	var m Member
-	err := db.Get(&m,
-		"SELECT `employee_num`, `name`, `enabled` FROM `mwmber` WHERE `employee_num`=?;",
-		employeeNum)
+func GetTransaction() (tl []Transaction, err error) {
+	err = db.Get(&tl,
+		"SELECT `id`, `employee_num`, `updated_date`, "+
+			"`before`, `add`, `subtracted`, `after`, `reason` "+
+			"FROM `transactions`")
 
-	return m, err
+	return
+}
+
+func AddTransaction(employeeNum, hour int, operation, reason string) (int64, error) {
+	res, err := db.Exec(
+		"INSERT INTO `transactions`(`employee_num`, `updated_date`, `before`, `added`, `subtracted`, `after`, `reason`) "+
+			"VALUES (?, ?, ?, ?, ?, ?, ?);",
+		employeeNum, hour, operation, reason)
+
+	if err != nil {
+		return 0, err
+	}
+	return res.LastInsertId()
 }

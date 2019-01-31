@@ -123,7 +123,7 @@ func (h *Handler) UpdateAdminPassword(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) UpdateAdminEnabled(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	idStr := v["admin_id"]
-	enabled := v["enabled"]
+	eStr := v["enabled"]
 
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -132,7 +132,14 @@ func (h *Handler) UpdateAdminEnabled(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	a, err := updateAdminPassword(id, enabled)
+	enabled, err := strconv.Atoi(eStr)
+	if err != nil {
+		log.Printf("[INFO] Can't cast to int '" + idStr + "'.")
+		badRequest(w)
+		return
+	}
+
+	a, err := updateAdminEnabled(id, enabled)
 	if err != nil {
 		log.Printf("[INFO] sql is failed.")
 		badRequest(w)
@@ -268,6 +275,40 @@ func (h *Handler) GetTransactionList(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(transactionList); err != nil {
+		panic(err)
+	}
+}
+
+func (h *Handler) AddTransaction(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	employeeNumStr := v["employee_num"]
+	hourStr := v["hour"]
+	operation := v["operation"]
+	reason := v["reason"]
+
+	employeeNum, err := strconv.Atoi(employeeNumStr)
+	if err != nil {
+		log.Printf("[INFO] Can't cast to int '" + employeeNumStr + "'.")
+		badRequest(w)
+		return
+	}
+
+	hour, err := strconv.Atoi(hourStr)
+	if err != nil {
+		log.Printf("[INFO] Can't cast to int '" + employeeNumStr + "'.")
+		badRequest(w)
+		return
+	}
+
+	a, err := addTransaction(employeeNum, hour, operation, reason)
+	if err != nil {
+		log.Printf("[INFO] sql is failed.")
+		badRequest(w)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(a); err != nil {
 		panic(err)
 	}
 }

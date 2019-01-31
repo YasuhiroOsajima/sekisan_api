@@ -6,19 +6,17 @@ type Admin struct {
 	Enabled int    `json:"enabled"`
 }
 
-func GetAdmin(id int) (Admin, error) {
-	var a Admin
-	err := db.Get(&a,
+func GetAdmin(id int) (a Admin, err error) {
+	err = db.Get(&a,
 		"SELECT `id`, `name`, `enabled` FROM `admin` WHERE `id`=?;", id)
 
-	return a, err
+	return
 }
 
-func GetAdminList() ([]Admin, error) {
-	var a []Admin
-	err := db.Select(&a, "SELECT `id`, `name`, `enabled` FROM `admin`;")
+func GetAdminList() (al []Admin, err error) {
+	err = db.Select(&al, "SELECT `id`, `name`, `enabled` FROM `admin`;")
 
-	return a, err
+	return
 }
 
 func RegisterAdmin(name, passwd string, enabled int) (int64, error) {
@@ -32,23 +30,23 @@ func RegisterAdmin(name, passwd string, enabled int) (int64, error) {
 	return res.LastInsertId()
 }
 
-func UpdateAdminName(id int, name string) error {
-	_, err := db.Exec(
+func UpdateAdminName(id int, name string) (err error) {
+	_, err = db.Exec(
 		"UPDATE `admin` SET `name` = ? WHERE `id` = ?", name, id)
 
-	return err
+	return
 }
 
-func UpdateAdminPassword(id int, password string) error {
-	_, err := db.Exec(
+func UpdateAdminPassword(id int, password string) (err error) {
+	_, err = db.Exec(
 		"UPDATE `admin` SET `password` = ? WHERE `id` = ?", password, id)
 
-	return err
+	return
 }
 
-func UpdateAdminEnabled(id int, enabled int) error {
-	_, err := db.Exec(
+func UpdateAdminEnabled(id int, enabled int) (err error) {
+	_, err = db.Exec(
 		"UPDATE `admin` SET `password` = ? WHERE `id` = ?", enabled, id)
 
-	return err
+	return
 }
