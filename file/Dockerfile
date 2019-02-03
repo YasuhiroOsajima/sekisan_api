@@ -1,7 +1,7 @@
 # Compile stage
 FROM golang:1.10.1-alpine3.7 AS build-env
 ENV CGO_ENABLED 0
-ADD . /go/src/hello
+ADD .. /go/src/hello
 RUN go build -o main.go sekisan_api
 
 # Final stage

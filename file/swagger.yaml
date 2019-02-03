@@ -26,7 +26,7 @@ paths:
         - AdminAPI
       summary: List Admin users.
       description: Returns a list of Admin user information.
-      # used as the method name of the controller
+      # used as the method name of the service
       operationId: get_admin_list
       responses:
         200:
@@ -44,7 +44,7 @@ paths:
         - AdminAPI
       summary: Create Admin user.
       description: Create new Admin user.
-      # used as the method name of the controller
+      # used as the method name of the service
       operationId: create_admin_user
       produces:
         - application/json
@@ -75,7 +75,7 @@ paths:
         - AdminAPI
       summary: Change Admin user name.
       description: Change Admin user name.
-      # used as the method name of the controller
+      # used as the method name of the service
       operationId: change_admin_name
       parameters:
         - name: admin_id
@@ -104,7 +104,7 @@ paths:
         - AdminAPI
       summary: Change Admin user password.
       description: Change Admin user password.
-      # used as the method name of the controller
+      # used as the method name of the service
       operationId: change_admin_password
       parameters:
         - name: admin_id
@@ -133,7 +133,7 @@ paths:
         - AdminAPI
       summary: Change Admin user enabled status.
       description: Change Admin user enabled status.
-      # used as the method name of the controller
+      # used as the method name of the service
       operationId: change_admin_enabled
       parameters:
         - name: admin_id
@@ -163,7 +163,7 @@ paths:
         - AdminAPI
       summary: List member users.
       description: Returns a list of member user information.
-      # used as the method name of the controller
+      # used as the method name of the service
       operationId: get_member_list
       responses:
         200:
@@ -181,7 +181,7 @@ paths:
         - AdminAPI
       summary: Create member user.
       description: Create new member user.
-      # used as the method name of the controller
+      # used as the method name of the service
       operationId: create_member_user
       produces:
         - application/json
@@ -212,7 +212,7 @@ paths:
         - AdminAPI
       summary: Change member user name.
       description: Change member user name.
-      # used as the method name of the controller
+      # used as the method name of the service
       operationId: change_member_name
       parameters:
         - name: member_id
@@ -241,7 +241,7 @@ paths:
         - AdminAPI
       summary: Change member user enabled status.
       description: Change member user enabled status.
-      # used as the method name of the controller
+      # used as the method name of the service
       operationId: change_member_enabled
       parameters:
         - name: member_id
@@ -269,7 +269,7 @@ paths:
     get:
       summary: List sekisan information.
       description: Returns a list of sekisan information.
-      # used as the method name of the controller
+      # used as the method name of the service
       operationId: get_sekisan_list
       responses:
         200:
@@ -287,7 +287,7 @@ paths:
     get:
       summary: List sekisan transaction information.
       description: Returns a list of sekisan transaction information.
-      # used as the method name of the controller
+      # used as the method name of the service
       operationId: get_transaction_list
       responses:
         200:
@@ -305,7 +305,7 @@ paths:
         - AdminAPI
       summary: Update sekisan information.
       description: Update sekisan information.
-      # used as the method name of the controller
+      # used as the method name of the service
       operationId: create_transaction
       produces:
         - application/json

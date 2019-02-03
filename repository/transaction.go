@@ -1,4 +1,4 @@
-package model
+package repository
 
 type Transaction struct {
 	Id          int    `json:"id"`
@@ -11,7 +11,13 @@ type Transaction struct {
 	Reason      string `json:"reason"`
 }
 
-func GetTransaction() (tl []Transaction, err error) {
+type transactionRepository struct{}
+
+func NewTransactionRepository() *transactionRepository {
+	return &transactionRepository{}
+}
+
+func (r *transactionRepository) GetTransaction() (tl []Transaction, err error) {
 	err = db.Get(&tl,
 		"SELECT `id`, `employee_num`, `updated_date`, "+
 			"`before`, `add`, `subtracted`, `after`, `reason` "+
@@ -20,7 +26,7 @@ func GetTransaction() (tl []Transaction, err error) {
 	return
 }
 
-func AddTransaction(employeeNum, hour int, operation, reason string) (int64, error) {
+func (r *transactionRepository) AddTransaction(employeeNum, hour int, operation, reason string) (int64, error) {
 	res, err := db.Exec(
 		"INSERT INTO `transactions`(`employee_num`, `updated_date`, `before`, `added`, `subtracted`, `after`, `reason`) "+
 			"VALUES (?, ?, ?, ?, ?, ?, ?);",
