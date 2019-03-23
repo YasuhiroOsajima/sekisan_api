@@ -10,6 +10,7 @@ import (
 var db *sqlx.DB
 
 func init() {
+	var err error
 	db, err = sqlx.Open("sqlite3", "./sekisan.sqlite3")
 	if err != nil {
 		log.Fatalf("DB connect failed. err: %s", err)
