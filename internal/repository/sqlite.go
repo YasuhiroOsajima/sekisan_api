@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/jmoiron/sqlx"
-	_ "github.com/mattn/go-sqlite3@v1.9.0"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var db *sqlx.DB

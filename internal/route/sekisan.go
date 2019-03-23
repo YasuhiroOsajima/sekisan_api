@@ -1,7 +1,7 @@
 package route
 
 import (
-	"github.com/gorilla/mux@v1.6.2"
+	"github.com/gorilla/mux"
 
 	"sekisan_api/internal/handler"
 	"sekisan_api/internal/repository"
