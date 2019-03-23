@@ -2,12 +2,13 @@ package handler
 
 import (
 	"encoding/json"
-	"sekisan_api/modules/pkg/mod/github.com/gorilla/mux@v1.6.2"
 	"log"
 	"net/http"
-	"sekisan_api/internal/repository"
 	"strconv"
 
+	"github.com/gorilla/mux@v1.6.2"
+
+	"sekisan_api/internal/repository"
 	"sekisan_api/internal/service"
 )
 

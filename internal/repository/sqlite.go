@@ -2,10 +2,11 @@ package repository
 
 import (
 	"fmt"
-	"github.com/jmoiron/sqlx"
-	_ "sekisan_api/modules/pkg/mod/github.com/mattn/go-sqlite3@v1.9.0"
 	"log"
 	"os"
+
+	"github.com/jmoiron/sqlx"
+	_ "github.com/mattn/go-sqlite3@v1.9.0"
 )
 
 var db *sqlx.DB

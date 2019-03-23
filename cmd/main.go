@@ -4,16 +4,16 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"sekisan_api/internal/route"
-	"sekisan_api/modules/pkg/mod/github.com/gorilla/context@v1.1.1"
-	"sekisan_api/modules/pkg/mod/github.com/gorilla/handlers@v1.4.0"
-	"sekisan_api/modules/pkg/mod/github.com/gorilla/mux@v1.6.2"
 	"time"
 
+	"github.com/gorilla/context@v1.1.1"
+	"github.com/gorilla/handlers@v1.4.0"
+	"github.com/gorilla/mux@v1.6.2"
 	"github.com/rs/cors"
 
 	"sekisan_api/configs"
 	"sekisan_api/internal/handler"
+	"sekisan_api/internal/route"
 )
 
 func init() {
