@@ -1,10 +1,10 @@
 package route
 
 import (
-	"github.com/gorilla/mux"
-	"sekisan_api/handler"
-	"sekisan_api/repository"
-	"sekisan_api/service"
+	"sekisan_api/modules/pkg/mod/github.com/gorilla/mux@v1.6.2"
+	"sekisan_api/internal/handler"
+	"sekisan_api/internal/repository"
+	"sekisan_api/internal/service"
 )
 
 func AddSekisanRoute(r *mux.Router) {

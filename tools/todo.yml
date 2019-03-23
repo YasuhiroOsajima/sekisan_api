@@ -1,0 +1,69 @@
+## やること
+- DB スキーマ
+- REST APIデザイン
+- フロントデザイン
+- Vue
+- HTML配布とREST API用のGoサーバ作成
+
+
+## 画面
+- ログイン画面
+- 参照画面
+- 管理画面
+
+
+## DBテーブル
+- Adminテーブル
+    - ユーザ名
+    - パスワード
+    - 有効
+- Memberテーブル
+    - 社員番号
+    - ユーザ名
+    - 有効
+- Sekisanテーブル
+    - ID
+    - 社員番号
+    - 積算時間
+- Transactionテーブル
+    - ID
+    - 変更日時
+    - 社員番号
+    - 変更前
+    - 加算
+    - 減算
+    - 変更後
+    - 理由
+
+
+## REST API
+### Admin
+- Admin登録
+- Adminパスワード変更
+- Admin無効化
+
+### Member
+- Member登録
+- Member無効化
+
+### Sekisan
+- Sekisan一覧
+- Member指定でのSekisan取得
+
+### Transaction
+- Transaction一覧
+- 変更登録
+
+
+## 画面
+### ログイン画面
+
+### 管理画面
+- 積算管理画面
+    - 積算変更機能
+- Transaction一覧
+    - 検索絞り込み機能
+- Admin管理画面
+- Member管理画面
+
+### 積算表示

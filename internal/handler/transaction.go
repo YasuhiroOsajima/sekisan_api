@@ -2,12 +2,12 @@ package handler
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
+	"sekisan_api/modules/pkg/mod/github.com/gorilla/mux@v1.6.2"
 	"log"
 	"net/http"
 	"strconv"
 
-	"sekisan_api/service"
+	"sekisan_api/internal/service"
 )
 
 type transactionService interface {

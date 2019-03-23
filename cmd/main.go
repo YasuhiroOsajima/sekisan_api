@@ -1,19 +1,19 @@
-package main
+package cmd
 
 import (
 	"log"
 	"net/http"
 	"os"
-	"sekisan_api/route"
+	"sekisan_api/internal/route"
+	"sekisan_api/modules/pkg/mod/github.com/gorilla/context@v1.1.1"
+	"sekisan_api/modules/pkg/mod/github.com/gorilla/handlers@v1.4.0"
+	"sekisan_api/modules/pkg/mod/github.com/gorilla/mux@v1.6.2"
 	"time"
 
-	"github.com/gorilla/context"
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 
-	"sekisan_api/config"
-	"sekisan_api/handler"
+	"sekisan_api/configs"
+	"sekisan_api/internal/handler"
 )
 
 func init() {
@@ -45,7 +45,7 @@ func main() {
 		Debug:            true,
 	})
 	hdr := c.Handler(r)
-	addr := ":" + config.Port
+	addr := ":" + configs.Port
 
 	log.Printf("[INFO] start server %s", addr)
 	log.Fatal(http.ListenAndServe(addr, context.ClearHandler(

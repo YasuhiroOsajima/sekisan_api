@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"sekisan_api/service"
+	"sekisan_api/internal/service"
 )
 
 type sekisanService interface {

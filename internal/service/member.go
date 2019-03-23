@@ -2,7 +2,7 @@ package service
 
 import (
 	"log"
-	"sekisan_api/repository"
+	"sekisan_api/internal/repository"
 )
 
 type MemberList struct {

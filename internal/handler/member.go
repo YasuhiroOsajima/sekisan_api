@@ -2,13 +2,13 @@ package handler
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
+	"sekisan_api/modules/pkg/mod/github.com/gorilla/mux@v1.6.2"
 	"log"
 	"net/http"
-	"sekisan_api/repository"
+	"sekisan_api/internal/repository"
 	"strconv"
 
-	"sekisan_api/service"
+	"sekisan_api/internal/service"
 )
 
 type memberService interface {
