@@ -10,7 +10,7 @@ type MemberList struct {
 	Member []repository.Member
 }
 
-type memberRepository interface {
+type memberRepositoryI interface {
 	GetMember(employeeNum int) (m repository.Member, err error)
 	GetMemberList() (ml []repository.Member, err error)
 	RegisterMember(employeeNum int, name string, enabled int) (err error)
@@ -19,10 +19,10 @@ type memberRepository interface {
 }
 
 type memberService struct {
-	mRepository memberRepository
+	mRepository memberRepositoryI
 }
 
-func NewMemberService(mr memberRepository) *memberService {
+func NewMemberService(mr memberRepositoryI) *memberService {
 	return &memberService{
 		mRepository: mr,
 	}

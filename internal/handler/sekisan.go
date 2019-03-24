@@ -8,15 +8,15 @@ import (
 	"sekisan_api/internal/service"
 )
 
-type sekisanService interface {
+type sekisanServiceI interface {
 	GetSekisanList() (sList service.SekisanList, err error)
 }
 
 type sekisanHandler struct {
-	service sekisanService
+	service sekisanServiceI
 }
 
-func NewSekisanHandler(sekisanService sekisanService) *sekisanHandler{
+func NewSekisanHandler(sekisanService sekisanServiceI) *sekisanHandler{
 	return &sekisanHandler{
 		service: sekisanService,
 	}

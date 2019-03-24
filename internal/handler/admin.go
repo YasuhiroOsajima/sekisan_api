@@ -12,7 +12,7 @@ import (
 	"sekisan_api/internal/service"
 )
 
-type adminService interface {
+type adminServiceI interface {
 	GetAdminList() (aList service.AdminList, err error)
 	RegisterAdmin(name, password string) (a repository.Admin, err error)
 	UpdateAdminName(id int, name string) (a repository.Admin, err error)
@@ -22,10 +22,10 @@ type adminService interface {
 
 // Admin handler
 type adminHandler struct {
-	service adminService
+	service adminServiceI
 }
 
-func NewAdminHandler(adminService adminService) *adminHandler {
+func NewAdminHandler(adminService adminServiceI) *adminHandler {
 	return &adminHandler{
 		service: adminService,
 	}

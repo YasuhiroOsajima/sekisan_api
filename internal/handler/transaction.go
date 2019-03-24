@@ -11,16 +11,16 @@ import (
 	"sekisan_api/internal/service"
 )
 
-type transactionService interface {
+type transactionServiceI interface {
 	GetTransactionList() (tList service.TransactionList, err error)
 	AddTransaction(employeeNum, hour int, operation, reason string) (res int64, err error)
 }
 
 type transactionHandler struct {
-	service transactionService
+	service transactionServiceI
 }
 
-func NewTransactionHandler(transactionService transactionService) *transactionHandler {
+func NewTransactionHandler(transactionService transactionServiceI) *transactionHandler {
 	return &transactionHandler{
 		service: transactionService,
 	}

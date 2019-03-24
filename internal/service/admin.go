@@ -10,7 +10,7 @@ type AdminList struct {
 	Admin []repository.Admin
 }
 
-type adminRepository interface {
+type adminRepositoryI interface {
 	GetAdmin(id int) (a repository.Admin, err error)
 	GetAdminList() (al []repository.Admin, err error)
 	RegisterAdmin(name, passwd string, enabled int) (int64, error)
@@ -20,10 +20,10 @@ type adminRepository interface {
 }
 
 type adminService struct {
-	aRepository adminRepository
+	aRepository adminRepositoryI
 }
 
-func NewAdminService(ar adminRepository) *adminService {
+func NewAdminService(ar adminRepositoryI) *adminService {
 	return &adminService{
 		aRepository: ar,
 	}

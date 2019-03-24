@@ -16,16 +16,16 @@ type SekisanList struct {
 	Sekisan []sekisan
 }
 
-type sekisanRepository interface {
+type sekisanRepositoryI interface {
 	GetAllSekisan() (sl []repository.Sekisan, err error)
 }
 
 type sekisanService struct {
-	sRepository sekisanRepository
-	mRepository memberRepository
+	sRepository sekisanRepositoryI
+	mRepository memberRepositoryI
 }
 
-func NewSekisanService(sr sekisanRepository, mr memberRepository) *sekisanService {
+func NewSekisanService(sr sekisanRepositoryI, mr memberRepositoryI) *sekisanService {
 	return &sekisanService{
 		sRepository: sr,
 		mRepository: mr,

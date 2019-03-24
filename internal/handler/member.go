@@ -12,7 +12,7 @@ import (
 	"sekisan_api/internal/service"
 )
 
-type memberService interface {
+type memberServiceI interface {
 	GetMemberList() (mList service.MemberList, err error)
 	RegisterMember(employeeNum int, name string) (m repository.Member, err error)
 	UpdateMemberName(employeeNum int, name string) (m repository.Member, err error)
@@ -20,10 +20,10 @@ type memberService interface {
 }
 
 type memberHandler struct {
-	service memberService
+	service memberServiceI
 }
 
-func NewMemberHandler(memberService memberService) *memberHandler {
+func NewMemberHandler(memberService memberServiceI) *memberHandler {
 	return &memberHandler{
 		service: memberService,
 	}

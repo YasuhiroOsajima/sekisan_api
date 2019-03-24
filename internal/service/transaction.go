@@ -10,16 +10,16 @@ type TransactionList struct {
 	Transaction []repository.Transaction
 }
 
-type transactionRepository interface {
+type transactionRepositoryI interface {
 	GetTransaction() (tl []repository.Transaction, err error)
 	AddTransaction(employeeNum, hour int, operation, reason string) (int64, error)
 }
 
 type transactionService struct {
-	tRepository transactionRepository
+	tRepository transactionRepositoryI
 }
 
-func NewTransactionService(tr transactionRepository) *transactionService {
+func NewTransactionService(tr transactionRepositoryI) *transactionService {
 	return &transactionService{
 		tRepository: tr,
 	}
