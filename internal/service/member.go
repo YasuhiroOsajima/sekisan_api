@@ -47,9 +47,14 @@ func (s *memberService) RegisterMember(employeeNum int, name string) (m reposito
 	}
 
 	for _, m := range mList {
+		foundMember := repository.Member{}
 		if m.EmployeeNum == employeeNum {
 			log.Printf("[INFO] Same employee number member already exists.")
-			return
+			foundMember = m
+			break
+		}
+		if foundMember.Name != "" {
+			return foundMember, nil
 		}
 	}
 

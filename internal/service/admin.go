@@ -48,9 +48,14 @@ func (s *adminService) RegisterAdmin(name, password string) (a repository.Admin,
 	}
 
 	for _, a := range aList {
+		foundAdmin := repository.Admin{}
 		if a.Name == name {
 			log.Printf("[INFO] Same name admin already exists.")
-			return
+			foundAdmin = a
+			break
+		}
+		if foundAdmin.Name != "" {
+			return foundAdmin, nil
 		}
 	}
 
